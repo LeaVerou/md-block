@@ -33,19 +33,21 @@ So I made my own. Feel free to use it. Or don't. I primarily wrote it to scratch
 
 Via HTML:
 ```html
-<script type="module" src="https://projects.verou.me/md-element"></script>
+<script type="module" src="https://projects.verou.me/md-block/md-block.js"></script>
 ```
 
 In JS:
 ```js
-import MarkdownBlock, MarkdownInline, MarkdownElement from "https://projects.verou.me/md-element"
+import MarkdownBlock, MarkdownInline, MarkdownElement from "https://projects.verou.me/md-block/md-block.js"
 ```
 
 By default, md-element registers two custom elements: `<md-block>` for block-level content and `<md-span>` for only inline content.
 If you want different names, you can register your own:
 
-```html
+```js
+import MarkdownBlock, MarkdownInline from "https://projects.verou.me/md-block/md-block.js"
 customElements.define("md-content", MarkdownBlock);
+customElements.define("md-inline", MarkdownSpan);
 ```
 
 </section>
