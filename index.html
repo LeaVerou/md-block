@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>md-element</title>
+	<link rel="icon" href="logo.svg">
+	<link rel="stylesheet" href="prism.css">
+	<link rel="stylesheet" href="style.css">
+	<script src="md-block.js" type="module"></script>
+	<script src="prism.js"></script>
+</head>
+<body>
+
+<header>
+	<h1>&lt;md-block></h1>
+
+	<md-block>
+		Render styleable Markdown in your HTML.
+		Uses [marked](https://marked.js.org/) under the hood.
+	</md-block>
+</header>
+
+<main>
+
+<md-block src="README.md" minheadinglevel="2"></md-block>
+
+<section>
+	<h2>Test</h2>
+
+	<pre><code>
+		&lt;md-block headerlevelstart="3">
+			# Heading
+
+			Text **bold text** *italic text* ~strike~
+
+			```js
+			test.foo();
+			```
+
+			* List item 1
+			* List item 2
+		&lt;/md-block>
+	</code></pre>
+	<md-block minheadinglevel="3">
+		# Heading
+
+		Text **bold text** *italic text* ~strike~
+
+		```js
+		test.foo();
+		```
+
+		* List item 1
+		* List item 2
+	</md-block>
+
+	<md-span>
+		# Heading
+
+		Text **bold text** *italic text* ~strike~
+
+		```js
+		test.foo();
+		```
+
+		* List item 1
+		* List item 2
+	</md-span>
+</section>
+
+
+</main>
+
+<footer>
+	Made in haste, by <a href="https://lea.verou.me">Lea Verou</a>. Use at your own risk.
+</footer>
+
+</body>
+</html>

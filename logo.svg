@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+	<style>
+	svg {
+		font-family: system-ui, sans-serif;
+		font-size: 70px;
+	}
+	</style>
+	<rect x="5" y="5" width="90" height="90" fill="none" stroke="black" stroke-width="8"/>
+	<text x="10" y="80" style="font-size: 130%">*</text>
+	<!-- <text x="50" y="40">-</text> -->
+	<text x="40" y="85">#</text>
+</svg>

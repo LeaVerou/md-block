@@ -1,0 +1,75 @@
+:root {
+	--main-color-hs: 200 50%;
+	--main-color: hsl(var(--main-color-hs) 50%);
+}
+
+body {
+	display: flex;
+	flex-flow: column;
+	min-height: 100vh;
+	margin: 0;
+	font: 120%/1.5 system-ui, sans-serif;
+}
+
+a {
+	color: hsl(var(--main-color-hs) 40%);
+}
+
+	a:where(:visited) {
+		color: hsl(310 50% 40%);
+	}
+
+pre, code {
+	font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+body > header,
+main,
+body > footer {
+	padding: 1.5rem clamp(1rem, 50vw - 20rem, 20vw);
+}
+
+body > header {
+	background: var(--main-color);
+	color: white;
+	text-align: center;
+}
+
+	body > header h1 {
+		margin: 0;
+		font-size: 500%;
+	}
+
+	body > header h2 {
+		margin: 0;
+	}
+
+	body > header a {
+		color: inherit;
+	}
+
+main {
+	flex: 1;
+}
+
+body > footer {
+	background: hsl(200 20% 90%);
+}
+
+	body > footer a {
+		color: inherit;
+	}
+
+table {
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+th {
+	background: hsl(220 10% 50% / .1);
+}
+
+td, th {
+	padding: .3em .5em;
+	border: 1px solid rgb(0 0 0 / .2);
+}
