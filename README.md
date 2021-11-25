@@ -4,12 +4,12 @@
 
 There are many web components these days to render Markdown to HTML. Here are a few:
 
-* [&lt;marked-element>](https://github.com/PolymerElements/marked-element)
-* [&lt;zero-md>](https://zerodevx.github.io/zero-md/)
+* [`<marked-element>`](https://github.com/PolymerElements/marked-element)
+* [`<zero-md>`](https://zerodevx.github.io/zero-md/)
 * …and I’m sure many others
 
 However, all render the resulting Markdown in Shadow DOM, making it difficult to style like a regular part of the page.
-`&lt;zero-md>` supports opt-in light DOM rendering, but it's tedious to add an extra attribute per element.
+`<zero-md>` supports opt-in light DOM rendering, but it's tedious to add an extra attribute per element.
 
 I also wanted a [few more things](#features) existing web components didn't have. Plus, making stuff is fun. 😅
 
@@ -22,8 +22,8 @@ So I made my own. Feel free to use it. Or don't. I primarily wrote it to scratch
 
 * Styleable with regular selectors, just like the rest of the page
 * Load external Markdown files or render inline content
-* Customize start heading level (e.g. so that `# Foo` becomes a `&lt;h3>` and not an `&lt;h1>`)
-* Also comes with `&lt;md-span>`, for lightweight inline markdown
+* Customize start heading level (e.g. so that `# Foo` becomes a `<h3>` and not an `<h1>`)
+* Also comes with `<md-span>`, for lightweight inline markdown
 
 </section>
 
@@ -38,16 +38,18 @@ Via HTML:
 
 In JS:
 ```js
-import MarkdownBlock, MarkdownInline, MarkdownElement from "https://projects.verou.me/md-block/md-block.js"
+import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "https://projects.verou.me/md-block/md-block.js"
 ```
 
-By default, md-element registers two custom elements: `<md-block>` for block-level content and `<md-span>` for only inline content.
-If you want different names, you can register your own:
+## Using different tag names
+
+By default, md-element registers two custom elements: `<md-block>` for block-level content and `<md-span>` for inline content.
+You can use different names, but since each class can only be associated with one tag name, you need to create your own subclass:
 
 ```js
-import MarkdownBlock, MarkdownInline from "https://projects.verou.me/md-block/md-block.js"
-customElements.define("md-content", MarkdownBlock);
-customElements.define("md-inline", MarkdownSpan);
+import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "https://projects.verou.me/md-block/md-block.js"
+
+customElements.define("md-content", class MarkdownContent extends MarkdownBlock {});
 ```
 
 </section>

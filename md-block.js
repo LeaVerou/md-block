@@ -56,7 +56,16 @@ export class MarkdownSpan extends MarkdownElement {
 
 	static renderer = {
 		codespan (code) {
-			code = code.replace(/&amp;(?=[lg]t;)/g, "&");
+			if (this._remoteContent) {
+				// Remote code may include characters that need to be escaped to be visible in HTML
+				code = code.replace(/</g, "&lt;");
+			}
+			else {
+				// Inline HTML code needs to be escaped to not be parsed as HTML by the browser
+				// This results in marked double-escaping it, so we need to unescape it
+				code = code.replace(/&amp;(?=[lg]t;)/g, "&");
+			}
+
 			return `<code>${code}</code>`;
 		}
 	}
@@ -143,6 +152,16 @@ export class MarkdownBlock extends MarkdownElement {
 		},
 
 		code (code, language, escaped) {
+			if (this._remoteContent) {
+				// Remote code may include characters that need to be escaped to be visible in HTML
+				code = code.replace(/</g, "&lt;");
+			}
+			else {
+				// Inline HTML code needs to be escaped to not be parsed as HTML by the browser
+				// This results in marked double-escaping it, so we need to unescape it
+				code = code.replace(/&amp;(?=[lg]t;)/g, "&");
+			}
+
 			return `<pre class="language-${language}"><code>${code}</code></pre>`;
 		}
 	}, MarkdownSpan.renderer);
@@ -173,8 +192,12 @@ export class MarkdownBlock extends MarkdownElement {
 					fetch(this.src)
 					.then(response => response.text())
 					.then(text => {
+						this._remoteContent = true;
 						this.mdContent = text;
 						this.render();
+					})
+					.catch(e => {
+						this._remoteContent = false;
 					});
 				}
 
@@ -189,7 +212,6 @@ export class MarkdownBlock extends MarkdownElement {
 		}
 	}
 }
-
 
 
 customElements.define("md-block", MarkdownBlock);
