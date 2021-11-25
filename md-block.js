@@ -75,7 +75,13 @@ export class MarkdownElement extends HTMLElement {
 		let html = this._parse();
 
 		if (this.untrusted) {
+			let mdContent = this._mdContent;
 			html = await MarkdownElement.sanitize(html);
+			if (this._mdContent !== mdContent) {
+				// While we were running this async call, the content changed
+				// We don’t want to overwrite with old data. Abort mission!
+				return;
+			}
 		}
 
 		this.innerHTML = html;
