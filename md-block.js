@@ -4,10 +4,15 @@
  */
 import { marked } from "https://cdn.jsdelivr.net/npm/marked/src/marked.js";
 
+let DOMPurifyURL = "https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.es.min.js";
+let DOMPurify;
+
 marked.setOptions({
 	gfm: true,
 	langPrefix: "language-",
 });
+
+
 
 export class MarkdownElement extends HTMLElement {
 	constructor() {
@@ -25,6 +30,13 @@ export class MarkdownElement extends HTMLElement {
 	}
 
 	connectedCallback() {
+		Object.defineProperty(this, "untrusted", {
+			value: this.hasAttribute("untrusted"),
+			enumerable: true,
+			configurable: false,
+			writable: false
+		});
+
 		this.mdContent = this.innerHTML;
 
 		// Fix indentation
@@ -39,7 +51,7 @@ export class MarkdownElement extends HTMLElement {
 		this.render();
 	}
 
-	async render ({force = false} = {}) {
+	async render () {
 		if (!this.isConnected || this.mdContent === undefined) {
 			return;
 		}
@@ -47,6 +59,10 @@ export class MarkdownElement extends HTMLElement {
 		marked.use({renderer: this.renderer});
 
 		var html = this._parse();
+
+		if (this.untrusted) {
+			html = await MarkdownElement.sanitize(html);
+		}
 
 		this.innerHTML = html;
 
@@ -57,6 +73,14 @@ export class MarkdownElement extends HTMLElement {
 		}
 
 		this.setAttribute("rendered", "");
+	}
+
+	static async sanitize(html) {
+		if (!DOMPurify) {
+			DOMPurify = await import(DOMPurifyURL).then(m => m.default);
+		}
+
+		return DOMPurify.sanitize(html);
 	}
 };
 
@@ -99,12 +123,12 @@ export class MarkdownBlock extends MarkdownElement {
 		this.setAttribute("src", value);
 	}
 
-	get minh() {
-		return this._minh || 1;
+	get hmin() {
+		return this._hmin || 1;
 	}
 
-	set minh(value) {
-		this.setAttribute("minh", value);
+	set hmin(value) {
+		this.setAttribute("hmin", value);
 	}
 
 	get hlinks() {
@@ -121,7 +145,7 @@ export class MarkdownBlock extends MarkdownElement {
 
 	static renderer = Object.assign({
 		heading (text, level, _raw, slugger) {
-			level = Math.min(6, level + (this.minh - 1));
+			level = Math.min(6, level + (this.hmin - 1));
 			const id = slugger.slug(text);
 			const hlinks = this.hlinks;
 
@@ -166,7 +190,7 @@ export class MarkdownBlock extends MarkdownElement {
 	}, MarkdownSpan.renderer);
 
 	static get observedAttributes() {
-		return ["src", "minh", "hlinks"];
+		return ["src", "hmin", "hlinks"];
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -207,9 +231,9 @@ export class MarkdownBlock extends MarkdownElement {
 				}
 
 				break;
-			case "minh":
+			case "hmin":
 				if (newValue > 0) {
-					this._minh = +newValue;
+					this._hmin = +newValue;
 
 					this.render();
 				}

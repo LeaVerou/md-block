@@ -25,7 +25,7 @@
 
 <main>
 
-<md-block src="README.md" minh="2"></md-block>
+<md-block src="README.md" hmin="2"></md-block>
 
 <section>
 	<h2 id="demos">Demos</h2>
@@ -62,12 +62,26 @@
 	<p>Minimum heading level:</p>
 
 	<script type="text/html" class="md-block-demo">
-		<md-block minh="3">
+		<md-block hmin="3">
 			# Heading 3
 			## Heading 4
 			### Heading 5
 			#### Heading 6
 			##### Still heading 6
+		</md-block>
+	</script>
+
+	<p>Heading links</p>
+	<script type="text/html" class="md-block-demo">
+		<md-block hlinks>
+			# Heading 1
+			## Heading 2
+			### Heading 3
+		</md-block>
+		<md-block hlinks="§">
+			# Heading 1
+			## Heading 2
+			### Heading 3
 		</md-block>
 	</script>
 
@@ -90,6 +104,14 @@
 			* List item 1
 			* List item 2
 		</md-span>
+	</script>
+
+	<md-block>With and without [sanitization](#handling-untrusted-content).</md-block>
+
+	<script type="text/html" class="md-block-demo">
+
+		<md-block untrusted src="data:text/markdown,A [Click me](javascript:alert('hi'))"></md-block>
+		<md-block src="data:text/markdown,B [Click me](javascript:alert('hi'))"></md-block>
 	</script>
 
 	<p>View source for more demos!</p>

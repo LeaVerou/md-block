@@ -4,7 +4,7 @@ import create from "https://v2.blissfuljs.com/src/dom/create.js";
 let i = 1;
 // const importURL = new URL("md-block.js", location) + "";
 const importURL = "https://md-block.verou.me/md-block.js";
-let js = `import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "${importURL}`;
+let js = `import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "${importURL}";`;
 
 for (let script of document.querySelectorAll("script[type='text/html'].md-block-demo")) {
 	let html = script.textContent;
@@ -34,9 +34,9 @@ for (let script of document.querySelectorAll("script[type='text/html'].md-block-
 									title: description.textContent,
 									html,
 									css: "",
-									js: "",
+									js,
 									editors: "1110",
-									head: `<script type="module" src="${importURL}"></script>"`
+									// head: `<script type="module" src="${importURL}"></script>`
 								})
 							},
 							{
