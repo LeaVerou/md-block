@@ -4,17 +4,18 @@
 
 There are many web components these days to render Markdown to HTML. Here are a few:
 
-* [`<marked-element>`](https://github.com/PolymerElements/marked-element)
 * [`<zero-md>`](https://zerodevx.github.io/zero-md/)
+* [`<marked-element>`](https://github.com/PolymerElements/marked-element)
 * …and I’m sure many others
 
-However, all render the resulting Markdown in Shadow DOM, making it difficult to style like a regular part of the page, which my use cases required.
+However, all render the resulting Markdown in Shadow DOM, making it painful to style like a regular part of the page, which my use cases required.
 `<zero-md>` supports opt-in light DOM rendering, but it's tedious to add an extra attribute per element.
 
-I also wanted a [few more things](#features) existing web components didn't have. Plus, making stuff is fun. 😅
+I also wanted a [few more things](#features) existing web components didn't have.
+Plus, making stuff is fun. 😅
 
 So I made my own. Feel free to use it. Or don't. 🤷🏽‍♀️
-I primarily wrote it to scratch my own itch anyway 😊
+I primarily wrote it to scratch my own itch anyway! 😊
 </section>
 
 <section>
@@ -26,6 +27,7 @@ I primarily wrote it to scratch my own itch anyway 😊
 * Load external Markdown files or render inline content
 * Customize start heading level (e.g. so that `# Foo` becomes a `<h3>` and not an `<h1>`)
 * Also comes with `<md-span>`, for lightweight inline markdown
+* [Prism](https://prismjs.com) is automatically used for syntax highlighting, if included
 
 [View demos](https://md-block.verou.me/#demos)
 
@@ -67,7 +69,7 @@ If you additionally want to use other tag names, [you can](#using-different-tag-
 
 | Attribute | Property | Type | Description |
 |-----------|----------|------|-------------|
-| - | `mdContent` | String | Actual Markdown code initially read from the HTML or fetched from `src` |
+| - | `mdContent` | String | Actual Markdown code initially read from the HTML or fetched from `src`. Can also be set to render new Markdown code |
 | `rendered` | `rendered` *(Read-only)* | String | Added to the element after Markdown has been rendered. Thus, you can use `md-block:not([rendered])` in your CSS to style the element differently before rendering and minimize FOUC |
 | `untrusted` | `untrusted` *(Read-only)* | Boolean | Sanitize contents. [Read more](#handling-untrusted-content)
 
@@ -75,7 +77,7 @@ If you additionally want to use other tag names, [you can](#using-different-tag-
 
 | Attribute | Property | Type | Description |
 |-----------|----------|------|-------------|
-| `src` | `src` | String or URL | External Markdown file to load. If specified, element content will be discarded |
+| `src` | `src` | String or URL | External Markdown file to load. If specified, original element content will be rendered and displayed while the file is loading (or if it fails to load). |
 | `hmin` | `hmin` | Number | Minimum heading level |
 | `hlinks` | `hlinks` | String | Whether to linkify headings. If present with no value, the entire heading text becomes the link, otherwise the symbol provided becomes the link. Note that this is only about displaying links, headings will get ids anyway |
 
@@ -88,6 +90,29 @@ If you additionally want to use other tag names, [you can](#using-different-tag-
 <section>
 
 # Recipes
+
+# Updating the Markdown
+
+While you can provide initial Markdown inline, after the element is rendered, changing its contents will not cause it to re-render,
+since its contents are now the parsed HTML (this is a disadvantage of this approach, compared to the Shadow DOM ones).
+
+If you need to update its contents dynamically, use `element.mdContent`.
+You can also read that property to get access to the Markdown code that was last rendered, whether it came from the element's contents,
+or fetched from a URL.
+
+Note that setting `mdContent` will override any remote URL provided via `src`.
+
+# Minimizing FOUC
+
+md-block adds a `rendered` attribute to elements whose Markdown has been rendered.
+This allows you to style unrendered content however you please, by using a `md-block:not([rendered])` CSS selector.
+
+- You could hide it entirely via `md-block:not([rendered]) { display: none }`
+- You could apply `white-space: pre-line` to it so that at least paragraphs are not all smushed together
+- …or you could do something fancier.
+
+I'd recommend you consider *how it fails* before deciding what to do. It's the Internet, 💩 happens.
+Do you want your content to not be visible if a script doesn't load?
 
 # Using different tag names
 

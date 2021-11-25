@@ -29,6 +29,16 @@ export class MarkdownElement extends HTMLElement {
 		return this.hasAttribute("rendered");
 	}
 
+	get mdContent () {
+		return this._mdContent;
+	}
+
+	set mdContent (html) {
+		this._mdContent = html;
+
+		this.render();
+	}
+
 	connectedCallback() {
 		Object.defineProperty(this, "untrusted", {
 			value: this.hasAttribute("untrusted"),
@@ -37,22 +47,22 @@ export class MarkdownElement extends HTMLElement {
 			writable: false
 		});
 
-		this.mdContent = this.innerHTML;
+		this._mdContent = this.innerHTML;
 
 		// Fix indentation
-		var indent = this.mdContent.match(/^[\t ]+/m);
+		var indent = this._mdContent.match(/^[\t ]+/m);
 
 		if (indent) {
 			indent = indent[0];
 
-			this.mdContent = this.mdContent.replace(RegExp("^" + indent, "gm"), "");
+			this._mdContent = this._mdContent.replace(RegExp("^" + indent, "gm"), "");
 		}
 
 		this.render();
 	}
 
 	async render () {
-		if (!this.isConnected || this.mdContent === undefined) {
+		if (!this.isConnected || this._mdContent === undefined) {
 			return;
 		}
 
@@ -90,7 +100,7 @@ export class MarkdownSpan extends MarkdownElement {
 	}
 
 	_parse () {
-		return marked.parseInline(this.mdContent);
+		return marked.parseInline(this._mdContent);
 	}
 
 	static renderer = {
@@ -140,7 +150,7 @@ export class MarkdownBlock extends MarkdownElement {
 	}
 
 	_parse () {
-		return marked.parse(this.mdContent);
+		return marked.parse(this._mdContent);
 	}
 
 	static renderer = Object.assign({
@@ -222,7 +232,7 @@ export class MarkdownBlock extends MarkdownElement {
 					})
 					.then(text => {
 						this._remoteContent = true;
-						this.mdContent = text;
+						this._mdContent = text;
 						this.render();
 					})
 					.catch(e => {
