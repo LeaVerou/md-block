@@ -33,7 +33,7 @@
 	<p>Block</p>
 
 	<script type="text/html" class="md-block-demo">
-		<md-block minh="3">
+		<md-block>
 			# Heading
 
 			Text **bold text** *italic text* ~strike~
@@ -56,6 +56,18 @@
 	<script type="text/html" class="md-block-demo">
 		<md-block src="nonexistent.md">
 			`nonexistent.md` was *not* found
+		</md-block>
+	</script>
+
+	<p>Minimum heading level:</p>
+
+	<script type="text/html" class="md-block-demo">
+		<md-block minh="3">
+			# Heading 3
+			## Heading 4
+			### Heading 5
+			#### Heading 6
+			##### Still heading 6
 		</md-block>
 	</script>
 

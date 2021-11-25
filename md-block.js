@@ -20,6 +20,10 @@ export class MarkdownElement extends HTMLElement {
 		}
 	}
 
+	get rendered() {
+		return this.hasAttribute("rendered");
+	}
+
 	connectedCallback() {
 		this.mdContent = this.innerHTML;
 
@@ -117,7 +121,7 @@ export class MarkdownBlock extends MarkdownElement {
 
 	static renderer = Object.assign({
 		heading (text, level, _raw, slugger) {
-			level = level + (this.minh - 1);
+			level = Math.min(6, level + (this.minh - 1));
 			const id = slugger.slug(text);
 			const hlinks = this.hlinks;
 
