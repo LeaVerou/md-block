@@ -1,0 +1,27 @@
+{
+  "name": "md-block",
+  "version": "0.0.1",
+  "description": "A custom element for rendering stylable (light DOM) Markdown",
+  "main": "md-block.js",
+  "scripts": {
+    "test": "open index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeaVerou/md-block.git"
+  },
+  "keywords": [
+    "Markdown",
+    "WebComponents",
+    "CustomElements",
+    "markdown-to-html",
+    "marked",
+    "Prism"
+  ],
+  "author": "Lea Verou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LeaVerou/md-block/issues"
+  },
+  "homepage": "https://md-block.verou.me"
+}
