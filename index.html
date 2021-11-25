@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="prism.css">
 	<link rel="stylesheet" href="style.css">
 	<script src="md-block.js" type="module"></script>
+	<script src="demo.js" type="module"></script>
 	<script src="prism.js"></script>
 </head>
 <body>
@@ -24,13 +25,15 @@
 
 <main>
 
-<md-block src="README.md" minheadinglevel="2"></md-block>
+<md-block src="README.md" minh="2"></md-block>
 
 <section>
-	<h2>Test</h2>
+	<h2 id="demos">Demos</h2>
 
-	<pre><code>
-		&lt;md-block headerlevelstart="3">
+	<p>Block</p>
+
+	<script type="text/html" class="md-block-demo">
+		<md-block minh="3">
 			# Heading
 
 			Text **bold text** *italic text* ~strike~
@@ -39,37 +42,46 @@
 			test.foo();
 			```
 
+			```html
+			&lt;foo>
+			```
+
 			* List item 1
 			* List item 2
-		&lt;/md-block>
-	</code></pre>
-	<md-block minheadinglevel="3">
-		# Heading
+		</md-block>
+	</script>
 
-		Text **bold text** *italic text* ~strike~
+	<p>Block with incorrect src and fallback content</p>
 
-		```js
-		test.foo();
-		```
+	<script type="text/html" class="md-block-demo">
+		<md-block src="nonexistent.md">
+			`nonexistent.md` was *not* found
+		</md-block>
+	</script>
 
-		* List item 1
-		* List item 2
-	</md-block>
+	<p>Inline. Note that block level syntax like headings, code blocks, or lists is not processed</p>
 
-	<md-span>
-		# Heading
+	<script type="text/html" class="md-block-demo">
+		<md-span>
+			# Heading
 
-		Text **bold text** *italic text* ~strike~
+			Text **bold text** *italic text* ~strike~
 
-		```js
-		test.foo();
-		```
+			```js
+			test.foo();
+			```
 
-		* List item 1
-		* List item 2
-	</md-span>
+			```html
+			&lt;foo>
+			```
+
+			* List item 1
+			* List item 2
+		</md-span>
+	</script>
+
+	<p>View source for more demos!</p>
 </section>
-
 
 </main>
 

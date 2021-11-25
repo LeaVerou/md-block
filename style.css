@@ -1,6 +1,8 @@
 :root {
 	--main-color-hs: 200 50%;
-	--main-color: hsl(var(--main-color-hs) 50%);
+	--main-color-hsl: var(--main-color-hs) 50%;
+	--main-color: hsl(var(--main-color-hsl));
+	--gray: 220 10% 50%;
 }
 
 body {
@@ -66,10 +68,42 @@ table {
 }
 
 th {
-	background: hsl(220 10% 50% / .1);
+	background: hsl(var(--gray) / .1);
 }
 
 td, th {
 	padding: .3em .5em;
 	border: 1px solid rgb(0 0 0 / .2);
 }
+
+.demo-container {
+	border: 1px solid hsl(var(--gray) / .2);
+	box-shadow: 0 1px .3em -.1em rgb(0 0 0 / .2), -.5em -.5em 0  hsl(var(--main-color-hsl) / .1) inset;
+	padding: 1em;
+	margin: 1em -1em;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto auto;
+	grid-gap: 1em;
+}
+
+	.demo-container header {
+		display: flex;
+		grid-column-end: span 2;
+	}
+
+		.demo-container header p {
+			margin: 0;
+		}
+
+		.demo-container header > form {
+			margin-left: auto;
+		}
+
+	.demo-code {
+
+	}
+
+	.demo-output {
+
+	}

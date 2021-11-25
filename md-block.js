@@ -34,6 +34,26 @@ export class MarkdownElement extends HTMLElement {
 
 		this.render();
 	}
+
+	async render ({force = false} = {}) {
+		if (!this.isConnected || this.mdContent === undefined) {
+			return;
+		}
+
+		marked.use({renderer: this.renderer});
+
+		var html = this._parse();
+
+		this.innerHTML = html;
+
+		let Prism = window.Prism || this.constructor.Prism;
+
+		if (Prism) {
+			Prism.highlightAllUnder(this);
+		}
+
+		this.setAttribute("rendered", "");
+	}
 };
 
 export class MarkdownSpan extends MarkdownElement {
@@ -41,17 +61,8 @@ export class MarkdownSpan extends MarkdownElement {
 		super();
 	}
 
-	render ({force = false} = {}) {
-		if (!this.isConnected || this.mdContent === undefined) {
-			return;
-		}
-
-		marked.use({renderer: this.renderer});
-
-		var html = marked.parseInline(this.mdContent);
-
-		this.innerHTML = html;
-		this.setAttribute("parsed", "");
+	_parse () {
+		return marked.parseInline(this.mdContent);
 	}
 
 	static renderer = {
@@ -84,69 +95,53 @@ export class MarkdownBlock extends MarkdownElement {
 		this.setAttribute("src", value);
 	}
 
-	get minHeadingLevel() {
-		return this._minHeadingLevel || 1;
+	get minh() {
+		return this._minh || 1;
 	}
 
-	set minHeadingLevel(value) {
-		this.setAttribute("minheadinglevel", value);
+	set minh(value) {
+		this.setAttribute("minh", value);
 	}
 
-	get headingLinks() {
-		return this._headingLinks ?? null;
+	get hlinks() {
+		return this._hlinks ?? null;
 	}
 
-	set headingLinks(value) {
-		this.setAttribute("headingLinks", value);
+	set hlinks(value) {
+		this.setAttribute("hlinks", value);
 	}
 
-	async render ({force = false} = {}) {
-		if (!this.isConnected || this.mdContent === undefined) {
-			return;
-		}
-
-		marked.use({renderer: this.renderer});
-
-		var html = marked.parse(this.mdContent);
-
-		this.innerHTML = html;
-
-		let Prism = window.Prism || this.constructor.Prism;
-
-		if (Prism) {
-			Prism.highlightAllUnder(this);
-		}
-
-		this.setAttribute("parsed", "");
+	_parse () {
+		return marked.parse(this.mdContent);
 	}
 
 	static renderer = Object.assign({
 		heading (text, level, _raw, slugger) {
-			level = level + (this.minHeadingLevel - 1);
+			level = level + (this.minh - 1);
 			const id = slugger.slug(text);
-			const headingLinks = this.headingLinks;
+			const hlinks = this.hlinks;
 
 			let content;
 
-			if (headingLinks === null) {
+			if (hlinks === null) {
 				// No heading links
 				content = text;
 			}
 			else {
-				content = `<a id="${id}" href="#${id}" class="anchor">`;
+				content = `<a href="#${id}" class="anchor">`;
 
-				if (headingLinks === "") {
+				if (hlinks === "") {
 					// Heading content is the link
 					content += text + "</a>";
 				}
 				else {
 					// Headings are prepended with a linked symbol
-					content += headingLinks + "</a>" + text;
+					content += hlinks + "</a>" + text;
 				}
 			}
 
 			return `
-				<h${level}>
+				<h${level} id="${id}">
 					${content}
 				</h${level}>`;
 		},
@@ -167,7 +162,7 @@ export class MarkdownBlock extends MarkdownElement {
 	}, MarkdownSpan.renderer);
 
 	static get observedAttributes() {
-		return ["src", "minHeadingLevel", "headingLinks"];
+		return ["src", "minh", "hlinks"];
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
@@ -190,7 +185,13 @@ export class MarkdownBlock extends MarkdownElement {
 
 				if (this.src !== prevSrc) {
 					fetch(this.src)
-					.then(response => response.text())
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`Failed to fetch ${this.src}: ${response.status} ${response.statusText}`);
+						}
+
+						return response.text();
+					})
 					.then(text => {
 						this._remoteContent = true;
 						this.mdContent = text;
@@ -202,13 +203,16 @@ export class MarkdownBlock extends MarkdownElement {
 				}
 
 				break;
-			case "minheadinglevel":
+			case "minh":
 				if (newValue > 0) {
-					this._minHeadingLevel = +newValue;
+					this._minh = +newValue;
 
 					this.render();
 				}
 				break;
+			case "hlinks":
+				this._hlinks = newValue;
+				this.render();
 		}
 	}
 }
