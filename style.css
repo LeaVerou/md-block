@@ -49,6 +49,12 @@ body > header {
 		height: 2em;
 		position: absolute;
 		background: url(logo.svg) center / contain no-repeat;
+		transition: .4s;
+		filter: drop-shadow(0 0 white);
+	}
+
+	body > header h1:hover::before {
+		filter: drop-shadow(.08em .08em white);
 	}
 
 	body > header h2 {
