@@ -44,17 +44,55 @@ body > header {
 
 	body > header h1::before {
 		content: "";
-		display: block;
-		width: 2em;
-		height: 2em;
-		position: absolute;
+		display: inline-block;
+		vertical-align: middle;
+		width: 1em;
+		height: 1em;
+		margin-right: .1em;
 		background: url(logo.svg) center / contain no-repeat;
 		transition: .4s;
 		filter: drop-shadow(0 0 white);
 	}
 
+	@media (min-width: 1700px) {
+		body > header h1::before {
+			display: block;
+			width: 2em;
+			height: 2em;
+			position: absolute;
+		}
+	}
+
+	@keyframes crazy-shadow {
+		20% {
+			filter: drop-shadow(var(--offset) var(--offset) white);
+			transform: translate(0, 0);
+		}
+
+		20.01% {
+			filter: invert() drop-shadow(calc(-1 * var(--offset)) calc(-1 * var(--offset)) black);
+			transform: translate(var(--offset), var(--offset));
+		}
+
+		50% {
+			filter: invert() drop-shadow(0 0 black);
+			transform: translate(0, 0);
+		}
+
+		70% {
+			filter: invert() drop-shadow(var(--offset) var(--offset) black);
+			transform: translate(0, 0);
+		}
+
+		70.01% {
+			filter: drop-shadow(calc(-1 * var(--offset)) calc(-1 * var(--offset)) white);
+			transform: translate(var(--offset), var(--offset));
+		}
+	}
+
 	body > header h1:hover::before {
-		filter: drop-shadow(.08em .08em white);
+		--offset: .2em;
+		animation: crazy-shadow 10s infinite ;
 	}
 
 	body > header h2 {
@@ -124,6 +162,10 @@ td, th {
 		.demo-container header > form {
 			margin-left: auto;
 		}
+
+			.demo-container header button {
+				white-space: nowrap;
+			}
 
 	.demo-code {
 		grid-area: code;
