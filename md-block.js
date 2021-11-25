@@ -35,6 +35,7 @@ export class MarkdownElement extends HTMLElement {
 
 	set mdContent (html) {
 		this._mdContent = html;
+		this._contentFromHTML = false;
 
 		this.render();
 	}
@@ -47,10 +48,13 @@ export class MarkdownElement extends HTMLElement {
 			writable: false
 		});
 
-		this._mdContent = this.innerHTML;
+		if (this._mdContent === undefined) {
+			this._contentFromHTML = true;
+			this._mdContent = this.innerHTML;
+		}
 
 		// Fix indentation
-		var indent = this._mdContent.match(/^[\t ]+/m);
+		let indent = this._mdContent.match(/^[\t ]+/m);
 
 		if (indent) {
 			indent = indent[0];
@@ -68,7 +72,7 @@ export class MarkdownElement extends HTMLElement {
 
 		marked.use({renderer: this.renderer});
 
-		var html = this._parse();
+		let html = this._parse();
 
 		if (this.untrusted) {
 			html = await MarkdownElement.sanitize(html);
@@ -105,14 +109,14 @@ export class MarkdownSpan extends MarkdownElement {
 
 	static renderer = {
 		codespan (code) {
-			if (this._remoteContent) {
-				// Remote code may include characters that need to be escaped to be visible in HTML
-				code = code.replace(/</g, "&lt;");
-			}
-			else {
+			if (this._contentFromHTML) {
 				// Inline HTML code needs to be escaped to not be parsed as HTML by the browser
 				// This results in marked double-escaping it, so we need to unescape it
 				code = code.replace(/&amp;(?=[lg]t;)/g, "&");
+			}
+			else {
+				// Remote code may include characters that need to be escaped to be visible in HTML
+				code = code.replace(/</g, "&lt;");
 			}
 
 			return `<code>${code}</code>`;
@@ -185,14 +189,14 @@ export class MarkdownBlock extends MarkdownElement {
 		},
 
 		code (code, language, escaped) {
-			if (this._remoteContent) {
-				// Remote code may include characters that need to be escaped to be visible in HTML
-				code = code.replace(/</g, "&lt;");
-			}
-			else {
+			if (this._contentFromHTML) {
 				// Inline HTML code needs to be escaped to not be parsed as HTML by the browser
 				// This results in marked double-escaping it, so we need to unescape it
 				code = code.replace(/&amp;(?=[lg]t;)/g, "&");
+			}
+			else {
+				// Remote code may include characters that need to be escaped to be visible in HTML
+				code = code.replace(/</g, "&lt;");
 			}
 
 			return `<pre class="language-${language}"><code>${code}</code></pre>`;
@@ -231,13 +235,9 @@ export class MarkdownBlock extends MarkdownElement {
 						return response.text();
 					})
 					.then(text => {
-						this._remoteContent = true;
-						this._mdContent = text;
-						this.render();
+						this.mdContent = text;
 					})
-					.catch(e => {
-						this._remoteContent = false;
-					});
+					.catch(e => {});
 				}
 
 				break;
