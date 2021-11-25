@@ -42,6 +42,15 @@ body > header {
 		font-size: 500%;
 	}
 
+	body > header h1::before {
+		content: "";
+		display: block;
+		width: 2em;
+		height: 2em;
+		position: absolute;
+		background: url(logo.svg) center / contain no-repeat;
+	}
+
 	body > header h2 {
 		margin: 0;
 	}
@@ -82,14 +91,24 @@ td, th {
 	padding: 1em;
 	margin: 1em -1em;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto auto;
+	grid-template-areas: "header"
+	                     "code"
+	                     "demo";
 	grid-gap: 1em;
+}
+
+@media (min-width: 600px) {
+	.demo-container {
+		grid-template-areas: "header header"
+		                     "code demo";
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: auto auto;
+	}
 }
 
 	.demo-container header {
 		display: flex;
-		grid-column-end: span 2;
+		grid-area: header;
 	}
 
 		.demo-container header p {
@@ -101,9 +120,9 @@ td, th {
 		}
 
 	.demo-code {
-
+		grid-area: code;
 	}
 
 	.demo-output {
-
+		grid-area: demo;
 	}
