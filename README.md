@@ -26,7 +26,7 @@ I primarily wrote it to scratch my own itch anyway 😊
 * Customize start heading level (e.g. so that `# Foo` becomes a `<h3>` and not an `<h1>`)
 * Also comes with `<md-span>`, for lightweight inline markdown
 
-[View demos](https://projects.verou.me/md-block/#demos)
+[View demos](https://md-block.verou.me/#demos)
 
 </section>
 
@@ -36,12 +36,12 @@ I primarily wrote it to scratch my own itch anyway 😊
 
 Via HTML:
 ```html
-<script type="module" src="https://projects.verou.me/md-block/md-block.js"></script>
+<script type="module" src="https://md-block.verou.me/md-block.js"></script>
 ```
 
 In JS:
 ```js
-import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "https://projects.verou.me/md-block/md-block.js"
+import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "https://md-block.verou.me/md-block.js"
 ```
 </section>
 
@@ -53,7 +53,7 @@ By default, md-element registers two custom elements: `<md-block>` for block-lev
 You can use different names, but [since each class can only be associated with one tag name](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define#:~:text=Exceptions-,notsupportederror,-DOMException), you need to create your own subclass:
 
 ```js
-import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "https://projects.verou.me/md-block/md-block.js"
+import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "https://md-block.verou.me/md-block.js"
 
 customElements.define("md-content", class MarkdownContent extends MarkdownBlock {});
 ```

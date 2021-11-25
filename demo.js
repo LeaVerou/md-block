@@ -3,7 +3,7 @@ import create from "https://v2.blissfuljs.com/src/dom/create.js";
 
 let i = 1;
 // const importURL = new URL("md-block.js", location) + "";
-const importURL = "https://projects.verou.me/md-block/md-block.js";
+const importURL = "https://md-block.verou.me/md-block.js";
 let js = `import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "${importURL}`;
 
 for (let script of document.querySelectorAll("script[type='text/html'].md-block-demo")) {
