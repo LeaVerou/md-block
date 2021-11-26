@@ -24,7 +24,7 @@ export class MarkdownElement extends HTMLElement {
 	}
 
 	get rendered() {
-		return this.hasAttribute("rendered");
+		return this.getAttribute("rendered");
 	}
 
 	get mdContent () {
@@ -111,7 +111,12 @@ export class MarkdownElement extends HTMLElement {
 			Prism.highlightAllUnder(this);
 		}
 
-		this.setAttribute("rendered", "");
+		if (this.src) {
+			this.setAttribute("rendered", this._contentFromHTML? "fallback" : "remote");
+		}
+		else {
+			this.setAttribute("rendered", this._contentFromHTML? "content" : "property");
+		}
 	}
 
 	static async sanitize(html) {

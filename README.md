@@ -114,6 +114,14 @@ This allows you to style unrendered content however you please, by using a `md-b
 I'd recommend you consider *how it fails* before deciding what to do. It's the Internet, 💩 happens.
 Do you want your content to not be visible if a script doesn't load?
 
+When loading remote content, there are two renders: First, any fallback content renders, then the remote content.
+Because we often want to style the element differently until the remote content renders, the `rendered` attribute has keyword values, depending on what happened:
+
+* `fallback` when only fallback content has been rendered
+* `remote` if remote content has been rendered
+* `content` if element content has been rendered and there is no `src` attribute present
+* `property` if content has been rendered by setting `this.mdContent` directly
+
 ## Using different tag names
 
 By default, md-block registers two custom elements: `<md-block>` for block-level content and `<md-span>` for inline content.
