@@ -2,17 +2,15 @@
  * <md-content> custom element
  * @author Lea Verou
  */
-import { marked } from "https://cdn.jsdelivr.net/npm/marked/src/marked.js";
 
-let DOMPurifyURL = "https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.es.min.js";
-let DOMPurify;
+let marked = window.marked;
+let DOMPurify = window.DOMPurify;
+let Prism = window.Prism;
 
-marked.setOptions({
-	gfm: true,
-	langPrefix: "language-",
-});
-
-
+export const URLs = {
+	marked: "https://cdn.jsdelivr.net/npm/marked/src/marked.min.js",
+	DOMPurify: "https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.es.min.js"
+}
 
 export class MarkdownElement extends HTMLElement {
 	constructor() {
@@ -70,6 +68,17 @@ export class MarkdownElement extends HTMLElement {
 			return;
 		}
 
+		if (!marked) {
+			marked = import(URLs.marked).then(m => m.marked);
+		}
+
+		marked = await marked;
+
+		marked.setOptions({
+			gfm: true,
+			langPrefix: "language-",
+		});
+
 		marked.use({renderer: this.renderer});
 
 		let html = this._parse();
@@ -86,9 +95,19 @@ export class MarkdownElement extends HTMLElement {
 
 		this.innerHTML = html;
 
-		let Prism = window.Prism || this.constructor.Prism;
+		if (!Prism && URLs.Prism && this.querySelector("code")) {
+			Prism = import(URLs.Prism);
+
+			if (URLs.PrismCSS) {
+				let link = document.createElement("link");
+				link.rel = "stylesheet";
+				link.href = URLs.PrismCSS;
+				document.head.appendChild(link);
+			}
+		}
 
 		if (Prism) {
+			await Prism; // in case it's still loading
 			Prism.highlightAllUnder(this);
 		}
 
@@ -97,8 +116,10 @@ export class MarkdownElement extends HTMLElement {
 
 	static async sanitize(html) {
 		if (!DOMPurify) {
-			DOMPurify = await import(DOMPurifyURL).then(m => m.default);
+			DOMPurify = import(URLs.DOMPurify).then(m => m.default);
 		}
+
+		DOMPurify = await DOMPurify; // in case it's still loading
 
 		return DOMPurify.sanitize(html);
 	}

@@ -1,4 +1,5 @@
-import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "./md-block.js";
+import {URLs, MarkdownBlock, MarkdownSpan, MarkdownElement} from "./md-block.js";
+
 import create from "https://v2.blissfuljs.com/src/dom/create.js";
 
 let i = 1;
