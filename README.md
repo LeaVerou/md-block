@@ -176,6 +176,12 @@ MdBlockURLS.Prism = "./prism.js";
 MdBlockURLS.PrismCSS = "./prism.css";
 ```
 
+## `<md-block>` inception
+
+Did you know you can actualy use `<md-block>` *inside your Markdown* and it works correctly?
+
+For a cool example of this, check out [the Stretchy docs](https://stretchy.verou.me/#browser-support)
+
 ## How to set different Markdown options/flavor?
 
 Right now, this element uses GFM as a Markdown flavor and doesn’t expose a whole lot of options (besides `hmin` and `hlinks`).
