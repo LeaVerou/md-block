@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/LeaVerou/md-block/issues"
   },
-  "homepage": "https://md-block.verou.me"
+  "homepage": "https://md-block.verou.me",
+  "devDependencies": {
+    "eslint": "^8.3.0"
+  }
 }

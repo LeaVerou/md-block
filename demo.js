@@ -2,7 +2,6 @@ import {URLs, MarkdownBlock, MarkdownSpan, MarkdownElement} from "./md-block.js"
 
 import create from "https://v2.blissfuljs.com/src/dom/create.js";
 
-let i = 1;
 // const importURL = new URL("md-block.js", location) + "";
 const importURL = "https://md-block.verou.me/md-block.js";
 let js = `import {MarkdownBlock, MarkdownSpan, MarkdownElement} from "${importURL}";`;
