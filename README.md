@@ -142,7 +142,7 @@ This is not dynamic, you need to add it in your actual markup (or before the ele
 The reason is that it's unsafe to add it later: if the content has been already rendered once and treated as safe, it's pointless to sanitize it afterwards and re-render.
 
 Important: Do **not** rely on the `untrusted` attribute for inline Markdown! This is mainly useful for content linked via the `src` attribute.
-If there is potentially malicious code in the inline Markdown you are using, it will be picked up by the browser before md-block has the change to do anything about it.
+If there is potentially malicious code in the inline Markdown you are using, it will be picked up by the browser before md-block has the chance to do anything about it.
 Instead, use a regular `<md-block>` element, and `MarkdownElement.sanitize()` for the untrusted content.
 
 ## Using different URLs for marked and DOMPurify
