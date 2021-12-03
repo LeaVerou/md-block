@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>md-block Tests</title>
+	<link rel="icon" href="logo.svg">
+	<link rel="stylesheet" href="https://test.mavo.io/style.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/blissfuljs/1.0.4/bliss.min.js"></script>
+	<style>
+		script[type="text/html"] {
+			display: block;
+			white-space: pre-wrap;
+		}
+	</style>
+</head>
+<body>
+
+<h1>md-block Tests</h1>
+
+<section>
+	<h1>Basic functionality</h1>
+
+	<table class="reftest" data-test="innerHTML">
+		<tr title="md-block">
+			<td>
+				<md-block>
+					**foo**
+
+					```html
+					&lt;foo>
+					```
+				</md-block>
+			</td>
+			<td>
+				<script type="text/html">
+					<p><strong>foo</strong></p>
+					<pre class="language-html"><code>&lt;foo&gt;</code></pre>
+				</script>
+			</td>
+		</tr>
+		<tr title="md-span">
+			<td>
+				<md-span>
+					**foo**
+
+					```html
+					&lt;foo>
+					```
+				</md-span>
+			</td>
+			<td>
+				<script type="text/html">
+					<strong>foo</strong> <code>html &lt;foo&gt; </code>
+				</script>
+			</td>
+		</tr>
+	</table>
+</section>
+
+<section>
+	<h1>hmin</h1>
+
+	<table class="reftest" data-test="innerHTML">
+		<tr title="md-block">
+			<td>
+				<md-block hmin="3">
+					# 1
+					## 2
+					### 3
+					#### 4
+					##### 5
+					###### 6
+				</md-block>
+			</td>
+			<td>
+				<script type="text/html">
+					<h3 id="1">1</h3>
+					<h4 id="2">2</h4>
+					<h5 id="3">3</h5>
+					<h6 id="4">4</h6>
+					<h6 id="5">5</h6>
+					<h6 id="6">6</h6>
+				</script>
+			</td>
+		</tr>
+	</table>
+</section>
+
+<script>
+function innerHTML(test, ref) {
+	// console.log( $("md-block", test).innerHTML)
+	test = $("md-block, md-span", test)?.innerHTML;
+
+	ref = $("script[type='text/html']", ref)?.textContent;
+	[test, ref] = [test, ref].map(t => t.trim().replace(/\s+/g, " ").replace(/>\s+/g, ">").replace(/\s+<\//g, "</"));
+	console.log(test, 1, ref)
+	return test == ref;
+}
+</script>
+
+<script src="https://test.mavo.io/test.js"></script>
+<script src="md-block.js" type="module"></script>
+
+</body>
+</html>
