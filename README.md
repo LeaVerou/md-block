@@ -163,6 +163,8 @@ MdBlockURLS.DOMPurify = "./purify.es.js";
 But it's uncertain whether the new URLs will be picked up before the default ones load. In my tests that seems to work for DOMPurify but not marked.
 These libraries are loaded when the element is connected, so you *could* add the `<md-block>` elements dynamically to the document after you set the URLs, but that's a bit of a hassle.
 
+You can also use the `URLs` export to import these modules yourself, in case you want to add plugins or whatnot.
+
 ## Loading Prism dynamically
 
 By default `md-block` will use Prism if it's available, but won’t load it dynamically if it isn't.
