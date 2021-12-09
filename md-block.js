@@ -121,6 +121,10 @@ export class MarkdownElement extends HTMLElement {
 		else {
 			this.setAttribute("rendered", this._contentFromHTML? "content" : "property");
 		}
+
+		// Fire event
+		let event = new CustomEvent("md-render", {bubbles: true, composed: true});
+		this.dispatchEvent(event);
 	}
 
 	static async sanitize(html) {
