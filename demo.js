@@ -69,16 +69,39 @@ import * as Stretchy from "https://stretchy.verou.me/dist/stretchy.min.js";
 Stretchy.selectors.filter = "#repl *";
 Stretchy.init();
 
+if (localStorage["md-block-demo"]){
+	JSON.parse(localStorage["md-block-demo"]).forEach(([name, value]) => {
+		let el = repl_container.elements[name];
+
+		if (el) {
+			el.value = value;
+			el.dispatchEvent(new Event("input"));
+		}
+	});
+}
+
 repl.addEventListener("input", evt => {
 	let {target} = evt;
 	let f = repl_container;
 	let html = `<${f.tag.value} ${f.attributes.value}>
 ${f.contents.value}
 </${f.tag.value}>`;
-
+// console.log(html);
 	end_tag.textContent = f.tag.value;
 
 	rendering.innerHTML = html;
+
+	let values = [];
+	for (let el of f.elements) {
+		if (el.name) {
+			values.push([el.name, el.value]);
+		}
+	}
+
+	if (evt.isTrusted) {
+		localStorage["md-block-demo"] = JSON.stringify(values);
+	}
+
 });
 
 repl.dispatchEvent(new Event("input"));
