@@ -80,6 +80,7 @@ export class MarkdownElement extends HTMLElement {
 
 		marked.setOptions({
 			gfm: true,
+			smartypants: true,
 			langPrefix: "language-",
 		});
 
