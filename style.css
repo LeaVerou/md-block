@@ -208,7 +208,7 @@ nav {
 
 #repl_container {
 	display: grid;
-	grid-template-columns: repeat(3, calc(100% / 3));
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 	padding: 1em;
 	gap: 1em;
 	background: hsl(var(--gray) / .1);
@@ -249,7 +249,7 @@ nav {
 		overflow: auto;
 	}
 
-	#repl pre {
+	#repl pre:not(#rendering *) {
 		background: transparent;
 	}
 
@@ -261,6 +261,6 @@ nav {
 		border: none;
 	}
 
-pre[class]:not(#rendering *) {
+pre[class] {
 	background: hsl(var(--gray) / .1);
 }
