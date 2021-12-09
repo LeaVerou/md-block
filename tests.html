@@ -55,6 +55,23 @@
 				</script>
 			</td>
 		</tr>
+		<tr title="Nested HTML elements should still process markdown">
+			<td>
+				<md-block>
+					<div class="warning">
+
+					**Warning:** This should still have [Markdown](https://md-block.verou.me)
+					</div>
+				</md-block>
+			</td>
+			<td>
+				<script type="text/html">
+					<div class="warning">
+						<p><strong>Warning:</strong> This should still have <a href="https://md-block.verou.me">Markdown</a></p>
+					</div>
+				</script>
+			</td>
+		</tr>
 	</table>
 </section>
 
