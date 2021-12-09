@@ -12,6 +12,19 @@ export const URLs = {
 	DOMPurify: "https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.es.min.js"
 }
 
+// Fix indentation
+function deIndent(text) {
+	let indent = text.match(/^[\r\n]*([\t ]+)/);
+
+	if (indent) {
+		indent = indent[1];
+
+		text = text.replace(RegExp("^" + indent, "gm"), "");
+	}
+
+	return text;
+}
+
 export class MarkdownElement extends HTMLElement {
 	constructor() {
 		super();
@@ -48,16 +61,7 @@ export class MarkdownElement extends HTMLElement {
 
 		if (this._mdContent === undefined) {
 			this._contentFromHTML = true;
-			this._mdContent = this.innerHTML;
-		}
-
-		// Fix indentation
-		let indent = this._mdContent.match(/^[\t ]+/m);
-
-		if (indent) {
-			indent = indent[0];
-
-			this._mdContent = this._mdContent.replace(RegExp("^" + indent, "gm"), "");
+			this._mdContent = deIndent(this.innerHTML);
 		}
 
 		this.render();
