@@ -7,10 +7,12 @@
 	<title>md-block: Render styleable Markdown in your HTML</title>
 	<link rel="icon" href="logo.svg">
 	<link rel="stylesheet" href="prism.css">
+	<link rel="stylesheet" href="https://live.prismjs.com/prism-live.css">
 	<link rel="stylesheet" href="style.css">
 	<!-- <script src="md-block.js" type="module"></script> -->
 	<script src="demo.js" type="module"></script>
 	<script src="prism.js"></script>
+	<script src="https://live.prismjs.com/src/prism-live.js?load=html,markdown"></script>
 </head>
 <body>
 
@@ -22,6 +24,14 @@
 		Uses [marked](https://marked.js.org/) under the hood.
 	</md-block>
 </header>
+
+<nav>
+	<a href="#usage">Usage</a>
+	<a href="#api">API</a>
+	<a href="#recipes">Recipes</a>
+	<a href="tests.html">Tests</a>
+	<a href="https://github.com/leaverou/md-block">GitHub</a>
+</nav>
 
 <main>
 
@@ -120,6 +130,27 @@
 </section>
 
 </main>
+
+<section id="repl">
+	<h2>Live demo</h2>
+
+	<form id="repl_container">
+<pre data-title="Input HTML"><code><span class="token punctuation">&lt;</span><select name="tag" class="token tag"><option>md-block</option><option>md-span</option></select> <input name="attributes" placeholder="foo=&quot;bar&quot; baz=&quot;quux&quot; "><span class="token punctuation">&gt;</span>
+<textarea name="contents" class="prism-live language-markdown">
+*This* is `md-block`
+</textarea>
+<span class="token punctuation">&lt;/</span><output class="token tag" id="end_tag"></output><span class="token punctuation">&gt;</span>
+</code></pre>
+<output id="output_html" data-title="Output HTML">
+<pre class="language-markup"><code></code></pre>
+</output>
+<output id="rendering" data-title="Rendering">
+
+</output>
+</form>
+</section>
+
+
 
 <footer>
 	<md-span>

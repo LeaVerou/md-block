@@ -65,4 +65,26 @@ for (let script of document.querySelectorAll("script[type='text/html'].md-block-
 	});
 }
 
+import * as Stretchy from "https://stretchy.verou.me/dist/stretchy.min.js";
+Stretchy.selectors.filter = "#repl *";
+Stretchy.init();
 
+repl.addEventListener("input", evt => {
+	let {target} = evt;
+	let f = repl_container;
+	let html = `<${f.tag.value} ${f.attributes.value}>
+${f.contents.value}
+</${f.tag.value}>`;
+
+	end_tag.textContent = f.tag.value;
+
+	rendering.innerHTML = html;
+});
+
+repl.dispatchEvent(new Event("input"));
+
+rendering.addEventListener("md-render", evt => {
+	let code = output_html.querySelector("code");
+	code.textContent = evt.target.outerHTML;
+	Prism.highlightElement(code);
+});

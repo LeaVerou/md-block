@@ -2,7 +2,7 @@
 	--main-color-hs: 200 50%;
 	--main-color-hsl: var(--main-color-hs) 50%;
 	--main-color: hsl(var(--main-color-hsl));
-	--gray: 220 10% 50%;
+	--gray: 200 20% 50%;
 }
 
 body {
@@ -25,7 +25,12 @@ pre, code {
 	font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
+input, select, textarea {
+	font: inherit;
+}
+
 body > header,
+nav,
 main,
 body > footer {
 	padding: 1.5rem clamp(1rem, 50vw - 20rem, 20vw);
@@ -108,7 +113,7 @@ main {
 }
 
 body > footer {
-	background: hsl(200 20% 90%);
+	background: hsl(var(--gray) / .2);
 }
 
 	body > footer a {
@@ -174,3 +179,88 @@ td, th {
 	.demo-output {
 		grid-area: demo;
 	}
+
+nav {
+	display: flex;
+	padding-top: 0;
+	padding-bottom: 0;
+	background: hsl(var(--main-color-hs) 65%);
+}
+
+	nav > a {
+		flex: 1;
+		padding: .4em .5em;
+		color: white;
+		font-weight: bold;
+	}
+
+	nav > a:hover {
+		background: linear-gradient(to right, hsl(var(--main-color-hs) 50%), hsl(var(--main-color-hs) 75%));
+	}
+
+	nav > a:where(:not(:hover)) {
+		text-decoration: none;
+	}
+
+#repl {
+
+}
+
+#repl_container {
+	display: grid;
+	grid-template-columns: repeat(3, calc(100% / 3));
+	padding: 1em;
+	gap: 1em;
+	background: hsl(var(--gray) / .1);
+}
+
+	#repl > h2 {
+		margin: 0;
+		margin-right: 1em;
+		text-align: right;
+		color: hsl(var(--gray) / .1);
+		font-size: 400%;
+		line-height: 1;
+		height: .8em;
+		letter-spacing: -.03em;
+		overflow: hidden;
+	}
+
+	#repl_container > * {
+
+	}
+
+	#repl_container > [data-title]::before {
+		content: attr(data-title);
+		display: block;
+		margin-bottom: 1rem;
+		color: hsl(var(--gray));
+		text-transform: uppercase;
+		font: bold smaller/1 system-ui, sans-serif;
+	}
+
+	pre > code > div.prism-live,
+	pre > code > textarea.prism-live {
+		margin-left: 4ch;
+		width: 100%;
+	}
+
+	#output_html {
+		overflow: auto;
+	}
+
+	#repl pre {
+		background: transparent;
+	}
+
+	#repl :is(input, select) {
+		background: white;
+		padding: .2em .3em .1em;
+		border-radius: .2em;
+		line-height: 1;
+		border: none;
+	}
+
+pre[class]:not(#rendering *) {
+	background: hsl(var(--gray) / .1);
+}
