@@ -12,6 +12,27 @@ export const URLs = {
 	DOMPurify: "https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.es.min.js"
 }
 
+/**
+ * Allow for custom marked extensions
+ * @param md - The marked instance being used. 
+ * @returns md - The marked instance after configuration
+ * @usage 
+ * import { extension as MarkdownExtension } from 'md-block';
+ * MarkdownExtension.extend = (marked, defaultRenderer) => {
+ * 		marked.use({renderer: {
+ * 				...defaultRenderer,
+ * 				heading(text, level) {
+ * 					return `<h${level}>🎉🎉${text}</h${level}>`;
+					}
+				}
+ * 		});
+ * 		return marked;
+ * };  
+ */
+export const extension = {
+	extend: null // (md, defaultRenderer) => md
+}
+
 // Fix indentation
 function deIndent(text) {
 	let indent = text.match(/^[\r\n]*([\t ]+)/);
@@ -86,6 +107,10 @@ export class MarkdownElement extends HTMLElement {
 
 		marked.use({renderer: this.renderer});
 
+		if( typeof extension.extend === "function" ) {
+			marked = extension.extend(marked, this.renderer);
+		}
+		
 		let html = this._parse();
 
 		if (this.untrusted) {
