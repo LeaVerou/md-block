@@ -15,6 +15,7 @@ export const URLs = {
 /**
  * Allow for custom marked extensions
  * @param md - The marked instance being used. 
+ * @param defaultRenderer - The default md-block renderer config. 
  * @returns md - The marked instance after configuration
  * @usage 
  * import { extension as MarkdownExtension } from 'md-block';
