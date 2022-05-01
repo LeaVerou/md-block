@@ -11,28 +11,49 @@ export const URLs = {
 	marked: "https://cdn.jsdelivr.net/npm/marked/src/marked.min.js",
 	DOMPurify: "https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.es.min.js"
 }
+class Hooks {
+	add (name, callback, first) {
+		if (typeof arguments[0] != "string") {
+			// Multiple hooks
+			for (let name in arguments[0]) {
+				this.add(name, arguments[0][name], arguments[1]);
+			}
 
-/**
- * Allow for custom marked extensions
- * @param md - The marked instance being used. 
- * @param defaultRenderer - The default md-block renderer config. 
- * @returns md - The marked instance after configuration
- * @usage 
- * import { extension as MarkdownExtension } from 'md-block';
- * MarkdownExtension.extend = (marked, defaultRenderer) => {
- * 		marked.use({renderer: {
- * 				...defaultRenderer,
- * 				heading(text, level) {
- * 					return `<h${level}>🎉🎉${text}</h${level}>`;
-					}
-				}
- * 		});
- * 		return marked;
- * };  
- */
-export const extension = {
-	extend: null // (md, defaultRenderer) => md
+			return;
+		}
+
+		(Array.isArray(name)? name : [name]).forEach(function(name) {
+			this[name] = this[name] || [];
+
+			if (callback) {
+				this[name][first? "unshift" : "push"](callback);
+			}
+		}, this);
+	}
+
+	run (name, env) {
+		this[name] = this[name] || [];
+		this[name].forEach(function(callback) {
+			callback.call(env && env.context? env.context : env, env);
+		});
+	}
 }
+/**
+ * hooks usage:
+import { hooks } from 'md-block';
+...
+hooks.add('render-start', ({marked, renderer}) => {
+	marked.use({renderer: {
+			...renderer,
+			heading(text, level) {
+				return `<h${level}>🎉🎉${text}</h${level}>`;
+				}
+			}
+	});
+	return marked;
+})
+ */
+export const hooks = new Hooks();
 
 // Fix indentation
 function deIndent(text) {
@@ -89,7 +110,7 @@ export class MarkdownElement extends HTMLElement {
 		this.render();
 	}
 
-	async render () {
+	async render() {
 		if (!this.isConnected || this._mdContent === undefined) {
 			return;
 		}
@@ -108,9 +129,8 @@ export class MarkdownElement extends HTMLElement {
 
 		marked.use({renderer: this.renderer});
 
-		if( typeof extension.extend === "function" ) {
-			marked = extension.extend(marked, this.renderer);
-		}
+		let env = {marked, renderer: this.renderer, context: this};
+		hooks.run("render-start", env);
 		
 		let html = this._parse();
 
