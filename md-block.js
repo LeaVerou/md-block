@@ -1,5 +1,5 @@
 /**
- * <md-content> custom element
+ * <md-block> custom element
  * @author Lea Verou
  */
 
