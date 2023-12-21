@@ -104,6 +104,29 @@
 	</table>
 </section>
 
+<section>
+	<h1>blockquote</h1>
+
+	<table class="reftest" data-test="innerHTML">
+		<tr title="md-block">
+			<td>
+				<md-block>
+					> Line one
+					> Line two
+					> Line three
+					Line four
+				</md-block>
+			</td>
+			<td>
+				<script type="text/html">
+					<blockquote><p>Line one</p><p>Line two</p><p>Line three</p></blockquote>
+					<p>Line four</p>
+				</script>
+			</td>
+		</tr>
+	</table>
+</section>
+
 <script>
 function innerHTML(test, ref) {
 	// console.log( $("md-block", test).innerHTML)
