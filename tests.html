@@ -108,7 +108,7 @@
 	<h1>blockquote</h1>
 
 	<table class="reftest" data-test="innerHTML">
-		<tr title="md-block">
+		<tr title="blockquotes render correctly">
 			<td>
 				<md-block>
 					> One long 
@@ -116,12 +116,6 @@
 					>       blockquote area
 					> with quotes > in quotes > in quotes
 					    > with spaces before
-
-					Outside block quotes
-
-					Non-quoted > symbol in text
-					
-					&gt Escaped blockquote
 				</md-block>
 				<testarea>
 				</testarea>
@@ -129,8 +123,66 @@
 			<td>
 				<script type="text/html">
 					<blockquote><p>One long markdown blockquote area with quotes &gt; in quotes &gt; in quotes with spaces before</p></blockquote>
-					<p>Outside block quotes</p>
+				</script>
+			</td>
+		</tr>
+		<tr title="Text above blockquotes isn't enclosed">
+			<td>
+				<md-block>
+					Text above blockquote
+					> Blockquote
+				</md-block>
+				<testarea>
+				</testarea>
+			</td>
+			<td>
+				<script type="text/html">
+					<p>Text above blockquote</p>
+					<blockquote><p>Blockquote</p></blockquote>
+				</script>
+			</td>
+		</tr>
+		<tr title="Text below blockquotes isn't enclosed">
+			<td>
+				<md-block>
+					> Blockquote
+					
+					Text below blockquote
+				</md-block>
+				<testarea>
+				</testarea>
+			</td>
+			<td>
+				<script type="text/html">
+					<blockquote><p>Blockquote</p></blockquote>
+					<p>Text below blockquote</p>
+				</script>
+			</td>
+		</tr>
+		<tr title="> does not turn into blockquotes mid-text">
+			<td>
+				<md-block>
+					Non-quoted > symbol in text
+				</md-block>
+				<testarea>
+				</testarea>
+			</td>
+			<td>
+				<script type="text/html">
 					<p>Non-quoted &gt; symbol in text</p>
+				</script>
+			</td>
+		</tr>
+		<tr title="&gt turns into blockquote">
+			<td>
+				<md-block>
+					&gt Escaped blockquote
+				</md-block>
+				<testarea>
+				</testarea>
+			</td>
+			<td>
+				<script type="text/html">
 					<blockquote><p>Escaped blockquote</p></blockquote>
 				</script>
 			</td>

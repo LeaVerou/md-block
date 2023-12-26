@@ -64,7 +64,7 @@ export class MarkdownElement extends HTMLElement {
 			this._mdContent = deIndent(this.innerHTML);
 			// https://github.com/markedjs/marked/issues/874#issuecomment-339995375
 			// marked expects markdown quotes (>) to be un-escaped, otherwise they won't render correctly
-			this._mdContent = this._mdContent.replace(/&gt;/gm, '>');
+			this._mdContent = this._mdContent.replace(/&gt;/g, '>');
 		}
 
 		this.render();
