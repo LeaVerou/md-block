@@ -1,6 +1,6 @@
 {
   "name": "md-block",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A custom element for rendering stylable (light DOM) Markdown",
   "main": "md-block.js",
   "scripts": {
